@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ejb="http://de.mkonersmann.ejb31/1.0" xsi:schemaLocation="http://de.mkonersmann.ejb31/1.0 ejb31.ecore">
+  <ejb:Role name="Admin"/>
+  <ejb:Role name="Manager"/>
+  <ejb:Role name="Manager"/>
+  <ejb:OperationSignature name="adminTask"/>
+  <ejb:Role name="Admin"/>
+  <ejb:SingletonSessionBean name="TestClass2">
+    <securitySpecs rolesAllowed="/2" rolesDeclared="/0 /1"/>
+    <ownedOperations xsi:type="ejb:SynchronousOperation" signature="/3">
+      <securitySpecs rolesAllowed="/4"/>
+    </ownedOperations>
+  </ejb:SingletonSessionBean>
+  <ejb:Role name="Admin"/>
+  <ejb:StatelessSessionBean name="TestClass">
+    <securitySpecs rolesAllowed="/6"/>
+  </ejb:StatelessSessionBean>
+  <ejb:Role name="Manager"/>
+  <ejb:OperationSignature name="secretMethod"/>
+  <ejb:StatefulSessionBean name="TestClass3">
+    <securitySpecs permitAll="true" runAs="/8"/>
+    <ownedOperations xsi:type="ejb:SynchronousOperation" signature="/9">
+      <securitySpecs permitAll="true"/>
+    </ownedOperations>
+  </ejb:StatefulSessionBean>
+</xmi:XMI>

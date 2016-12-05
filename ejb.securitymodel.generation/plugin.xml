@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="ejb.securitymodel.generation.GenerateHandler"
+            id="ejb.securitymodel.generation.generate"
+            name="generate">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+         <command
+               commandId="ejb.securitymodel.generation.generate"
+               label="Generate Model"
+               style="push"
+               tooltip="Generates EJB-Security Model">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="activeMenuSelection">
+                  <iterate
+                        ifEmpty="false"
+                        operator="or">
+                     <adapt
+                           type="org.eclipse.jdt.core.IJavaProject">
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+
+</plugin>
