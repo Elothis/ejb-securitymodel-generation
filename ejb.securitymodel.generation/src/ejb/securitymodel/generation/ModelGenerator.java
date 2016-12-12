@@ -16,6 +16,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
@@ -31,8 +32,10 @@ import de.mkonersmann.ejb31.*;
 public class ModelGenerator {
 	
 	private Ejb31Factory factory;
-	Resource resource;
-	public static final String URI_PATH = "ejb.securitymodel.generation/Securitymodel.xmi";
+	private Resource resource;
+	private List<Role> createdRoles;
+	
+	public String URI_PATH;
 	
 	/**
 	 * ModelGenerator constructor.
@@ -40,10 +43,7 @@ public class ModelGenerator {
 	 */
 	public ModelGenerator(){
 		this.factory = Ejb31Factory.eINSTANCE;
-		
-		//preparations to save the later created model
-        ResourceSet resSet = new ResourceSetImpl();
-        this.resource = resSet.createResource(URI.createURI(URI_PATH));
+		this.createdRoles = new ArrayList<>();
 	}
 	
 	
@@ -53,6 +53,11 @@ public class ModelGenerator {
 	 * @throws JavaModelException
 	 */
 	public void generateModel(IJavaProject project) throws JavaModelException{
+			//preparations to save the model
+			URI_PATH = "ejb.securitymodel.generation/" + project.getElementName() + "/Securitymodel.xmi";
+	        ResourceSet resSet = new ResourceSetImpl();
+	        this.resource = resSet.createResource(URI.createURI(URI_PATH));
+			
 			List<ICompilationUnit> beans = getJavaBeans(project);
 			buildModelInstance(beans);
 	}
@@ -226,8 +231,29 @@ public class ModelGenerator {
 				for(Object role : annotationValues){
 					Role allowedRole = factory.createRole();
 					allowedRole.setName((String)role);
-					secOp.getRolesAllowed().add(allowedRole);
-					resource.getContents().add(allowedRole);
+					//check if role already exists
+					if(createdRoles.isEmpty()){
+						//if no role is created yet, add this one
+						secOp.getRolesAllowed().add(allowedRole);
+						createdRoles.add(allowedRole);
+						resource.getContents().add(allowedRole);
+					}
+					else{
+						//check created roles for this particular role
+						//use already existing role if present, create new if not
+						boolean roleFound = false;
+						for(Role existingRole : createdRoles){
+							if(EcoreUtil.equals(existingRole, allowedRole)){
+								secOp.getRolesAllowed().add(existingRole);
+								roleFound = true;
+							}
+						}
+						if(!roleFound){
+							secOp.getRolesAllowed().add(allowedRole);
+							createdRoles.add(allowedRole);
+							resource.getContents().add(allowedRole);
+						}
+					}
 				}
 			}
 		}
@@ -281,8 +307,29 @@ public class ModelGenerator {
 					for(Object role : annotationValues){
 						Role declaredRole = factory.createRole();
 						declaredRole.setName((String)role);
-						beanSecuritySpecs.getRolesDeclared().add(declaredRole);
-						resource.getContents().add(declaredRole);
+						//check if role already exists
+						if(createdRoles.isEmpty()){
+							//if no role is created yet, add this one
+							beanSecuritySpecs.getRolesDeclared().add(declaredRole);
+							createdRoles.add(declaredRole);
+							resource.getContents().add(declaredRole);
+						}
+						else{
+							//check created roles for this particular role
+							//use already existing role if present, create new if not
+							boolean roleFound = false;
+							for(Role existingRole : createdRoles){
+								if(EcoreUtil.equals(existingRole, declaredRole)){
+									beanSecuritySpecs.getRolesDeclared().add(existingRole);
+									roleFound = true;
+								}
+							}
+							if(!roleFound){
+								beanSecuritySpecs.getRolesDeclared().add(declaredRole);
+								createdRoles.add(declaredRole);
+								resource.getContents().add(declaredRole);
+							}
+						}
 					}
 				}
 			}
@@ -303,8 +350,29 @@ public class ModelGenerator {
 					for(Object role : annotationValues){
 						Role allowedRole = factory.createRole();
 						allowedRole.setName((String)role);
-						beanSecuritySpecs.getRolesAllowed().add(allowedRole);
-						resource.getContents().add(allowedRole);
+						//check if role already exists
+						if(createdRoles.isEmpty()){
+							//if no role is created yet, add this one
+							beanSecuritySpecs.getRolesAllowed().add(allowedRole);
+							createdRoles.add(allowedRole);
+							resource.getContents().add(allowedRole);
+						}
+						else{
+							//check created roles for this particular role
+							//use already existing role if present, create new if not
+							boolean roleFound = false;
+							for(Role existingRole : createdRoles){
+								if(EcoreUtil.equals(existingRole, allowedRole)){
+									beanSecuritySpecs.getRolesAllowed().add(existingRole);
+									roleFound = true;
+								}
+							}
+							if(!roleFound){
+								beanSecuritySpecs.getRolesAllowed().add(allowedRole);
+								createdRoles.add(allowedRole);
+								resource.getContents().add(allowedRole);
+							}
+						}
 					}
 				}
 			}
@@ -324,8 +392,29 @@ public class ModelGenerator {
 					//add Role object
 					Role runAsRole = factory.createRole();
 					runAsRole.setName((String)annotationValues[0]);
-					beanSecuritySpecs.setRunAs(runAsRole);
-					resource.getContents().add(runAsRole);
+					
+					if(createdRoles.isEmpty()){
+						//if no role is created yet, add this one
+						beanSecuritySpecs.setRunAs(runAsRole);
+						createdRoles.add(runAsRole);
+						resource.getContents().add(runAsRole);
+					}
+					else{
+						//check created roles for this particular role
+						//use already existing role if present, create new if not
+						boolean roleFound = false;
+						for(Role existingRole : createdRoles){
+							if(EcoreUtil.equals(existingRole, runAsRole)){
+								beanSecuritySpecs.setRunAs(existingRole);
+								roleFound = true;
+							}
+						}
+						if(!roleFound){
+							beanSecuritySpecs.setRunAs(runAsRole);
+							createdRoles.add(runAsRole);
+							resource.getContents().add(runAsRole);
+						}
+					}
 				}
 			}
 			
