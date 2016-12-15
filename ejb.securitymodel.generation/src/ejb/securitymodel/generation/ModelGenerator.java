@@ -60,6 +60,8 @@ public class ModelGenerator {
 			
 			List<ICompilationUnit> beans = getJavaBeans(project);
 			buildModelInstance(beans);
+			
+			System.out.println("Model successfully created: " + URI_PATH);
 	}
 	
 	
@@ -79,22 +81,18 @@ public class ModelGenerator {
 			
 			switch(checkJavaBeanType(unit)){
 			case STATELESS:
-				System.out.println(unit.getElementName() + " is a stateless bean");
 				bean = factory.createStatelessSessionBean();
 				beanType = JavaBeanType.STATELESS;
 				break;
 			case STATEFUL:
-				System.out.println(unit.getElementName() + " is a stateful bean");
 				bean = factory.createStatefulSessionBean();
 				beanType = JavaBeanType.STATEFUL;
 				break;
 			case SINGLETON:
-				System.out.println(unit.getElementName() + " is a singleton bean");
 				bean = factory.createSingletonSessionBean();
 				beanType = JavaBeanType.SINGLETON;
 				break;
 			case MESSAGEDRIVEN:
-				System.out.println(unit.getElementName() + " is a message driven bean");
 				bean = factory.createMessageDrivenBean();
 				beanType = JavaBeanType.MESSAGEDRIVEN;
 				break;
@@ -105,7 +103,6 @@ public class ModelGenerator {
 			
 			//initialize bean fields
 			bean.setName(unit.getElementName().split(".java")[0]);	//set name without ~.java at end
-			System.out.println("Set name : " + bean.getName());
 			
 			//set bean-level security
 			EnterpriseBeanSecurity beanSecuritySpecs = createEnterpriseBeanSecuritySpecs(unit);
@@ -129,29 +126,6 @@ public class ModelGenerator {
 			
 			//adding created bean to resource object, which gets persisted after all required objects for the model are created
 			resource.getContents().add(bean);
-			
-			
-			//-----------------------------------------------------------------
-			//test console print
-			System.out.println("Security spec object: ");
-			System.out.println(bean.getSecuritySpecs().toString());
-			
-			System.out.println("Roles allowed");
-			for(Role role : bean.getSecuritySpecs().getRolesAllowed()){
-				System.out.println(role.getName());
-			}
-			
-			System.out.println("Roles declared");
-			for(Role role : bean.getSecuritySpecs().getRolesDeclared()){
-				System.out.println(role.getName());
-			}
-			
-			String runAs = bean.getSecuritySpecs().getRunAs() == null ? "" : bean.getSecuritySpecs().getRunAs().getName();
-			System.out.println("Run as " + runAs);
-			
-			
-			
-			System.out.println("-----------------------");
 			
 		} //end for-loop over all beans
 		

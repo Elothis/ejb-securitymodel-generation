@@ -25,7 +25,7 @@ public class GenerateHandler extends AbstractHandler{
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		System.out.println("Model generation");
+
 		//getting selected item
 		ISelection selection = HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().getSelection();
 		//casting it to IStructuredSelection to retrieve first element
@@ -38,9 +38,8 @@ public class GenerateHandler extends AbstractHandler{
 				
 				try {
 					IJavaProject project = (IJavaProject)projectObj;
-					//Generating the security model for the selected project
-					System.out.println("Generator called with project " + project.getElementName());
 					
+					//Generating the security model for the selected project
 					ModelGenerator generator = new ModelGenerator();
 					generator.generateModel(project);					
 					
