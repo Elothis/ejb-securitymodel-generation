@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -55,7 +56,10 @@ public class ModelGenerator {
 	 */
 	public void generateModel(IJavaProject project, String outputPath) throws JavaModelException{
 			//preparations to save the model
-			URI_PATH = outputPath + "/" + project.getElementName() + "/Securitymodel.xmi";
+			StringBuilder sb = new StringBuilder();
+			sb.append("file:///").append(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString()).append('/').append(outputPath).append('/').append(project.getElementName()).append("/SecurityModel.xmi");
+			URI_PATH = sb.toString();
+			System.out.println("URI_PATH = " + URI_PATH);
 	        ResourceSet resSet = new ResourceSetImpl();
 	        this.resource = resSet.createResource(URI.createURI(URI_PATH));
 			
