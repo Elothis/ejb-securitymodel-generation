@@ -50,11 +50,12 @@ public class ModelGenerator {
 	/**
 	 * Creates a security model for the specified Java project.
 	 * @param project Java project
+	 * @param outputPath path to save the created model instance to
 	 * @throws JavaModelException
 	 */
-	public void generateModel(IJavaProject project) throws JavaModelException{
+	public void generateModel(IJavaProject project, String outputPath) throws JavaModelException{
 			//preparations to save the model
-			URI_PATH = "ejb.securitymodel.generation/" + project.getElementName() + "/Securitymodel.xmi";
+			URI_PATH = outputPath + "/" + project.getElementName() + "/Securitymodel.xmi";
 	        ResourceSet resSet = new ResourceSetImpl();
 	        this.resource = resSet.createResource(URI.createURI(URI_PATH));
 			

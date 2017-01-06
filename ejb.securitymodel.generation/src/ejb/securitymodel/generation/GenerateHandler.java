@@ -41,7 +41,7 @@ public class GenerateHandler extends AbstractHandler{
 					
 					//Generating the security model for the selected project
 					ModelGenerator generator = new ModelGenerator();
-					generator.generateModel(project);					
+					generator.generateModel(project, "ejb.securitymodel.generation");					
 					
 				} catch (JavaModelException e) {
 					e.printStackTrace();
