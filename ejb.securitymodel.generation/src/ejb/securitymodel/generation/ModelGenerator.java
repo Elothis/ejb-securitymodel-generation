@@ -57,9 +57,12 @@ public class ModelGenerator {
 	public void generateModel(IJavaProject project, String outputPath) throws JavaModelException{
 			//preparations to save the model
 			StringBuilder sb = new StringBuilder();
-			sb.append("file:///").append(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString()).append('/').append(outputPath).append('/').append(project.getElementName()).append("/SecurityModel.xmi");
+			sb.append("file:///").append(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString())
+			.append('/').append(outputPath).append('/')
+			.append(project.getElementName()).append("/SecurityModel.xmi");
+			
 			URI_PATH = sb.toString();
-			System.out.println("URI_PATH = " + URI_PATH);
+
 	        ResourceSet resSet = new ResourceSetImpl();
 	        this.resource = resSet.createResource(URI.createURI(URI_PATH));
 			
@@ -121,10 +124,10 @@ public class ModelGenerator {
 			//getting all methods declared in the bean class
 			IMethod[] methods = beanClass.getMethods();
 			for(IMethod method : methods){
-				if(beanType == JavaBeanType.MESSAGEDRIVEN){		//if its message driven bean, create MessageDrivenBeanOperation and add it
+				if(beanType == JavaBeanType.MESSAGEDRIVEN){		//if it's a message driven bean, create MessageDrivenBeanOperation and add it
 					((MessageDrivenBean)bean).getOwnedOperations().add(createMessageDrivenBeanOperation(method));
 				}
-				else{											//if its session bean, create SessionBeanOperation and add it
+				else{											//if it's a session bean, create SessionBeanOperation and add it
 					((SessionBean)bean).getOwnedOperations().add(createSessionBeanOperation(method, asyncBean));
 				}
 			}
@@ -149,6 +152,7 @@ public class ModelGenerator {
 	 */
 	private SessionBeanOperation createSessionBeanOperation(IMethod method, boolean asyncBean){
 		boolean asyncMethod = false;
+		
 		//determine if its an asynchronous method
 		if( asyncBean || method.getAnnotation("Asynchronous").exists() || method.getAnnotation("javax.ejb.Asynchronous").exists()){
 			asyncMethod = true;
@@ -497,7 +501,7 @@ public class ModelGenerator {
 	 * Returns an array of the specified annotation values.
 	 * Only one element if the annotation has just one value, multiple elements otherwise.
 	 * @param annotation
-	 * @return
+	 * @return array of annotation values
 	 */
 	private Object[] getAnnotationValues(IAnnotation annotation){
 		Object[] result;
