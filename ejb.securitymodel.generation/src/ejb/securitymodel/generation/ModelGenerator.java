@@ -1,12 +1,5 @@
 package ejb.securitymodel.generation;
 
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IMemberValuePair;
-import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.IType;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,9 +13,24 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IMemberValuePair;
+import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 
-import de.mkonersmann.ejb31.*;
+import de.mkonersmann.ejb31.Ejb31Factory;
+import de.mkonersmann.ejb31.EnterpriseBean;
+import de.mkonersmann.ejb31.EnterpriseBeanOperationSecurity;
+import de.mkonersmann.ejb31.EnterpriseBeanSecurity;
+import de.mkonersmann.ejb31.MessageDrivenBean;
+import de.mkonersmann.ejb31.MessageDrivenBeanOperation;
+import de.mkonersmann.ejb31.OperationSignature;
+import de.mkonersmann.ejb31.Role;
+import de.mkonersmann.ejb31.SessionBean;
+import de.mkonersmann.ejb31.SessionBeanOperation;
 
 /**
  * Responsible for generating an EJB-security model instance for a given Java project.
