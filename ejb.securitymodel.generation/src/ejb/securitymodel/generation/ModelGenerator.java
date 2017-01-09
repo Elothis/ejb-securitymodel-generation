@@ -51,7 +51,7 @@ public class ModelGenerator {
 	/**
 	 * Creates a security model for the specified Java project.
 	 * @param project Java project
-	 * @param outputPath path to save the created model instance to
+	 * @param outputPath path within workspace to save the created model instance to
 	 * @throws JavaModelException
 	 */
 	public void generateModel(IJavaProject project, String outputPath) throws JavaModelException{
