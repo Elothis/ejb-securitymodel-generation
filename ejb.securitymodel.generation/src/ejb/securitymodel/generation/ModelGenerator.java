@@ -65,7 +65,7 @@ public class ModelGenerator {
 	public void generateModel(IJavaProject project, String outputPath) throws JavaModelException{
 			//preparations to save the model
 			StringBuilder sb = new StringBuilder();
-			sb.append("file:///").append(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString())
+			sb.append("file:///").append(System.getProperty("user.home").replace('\\', '/'))
 			.append('/').append(outputPath).append('/')
 			.append(project.getElementName()).append("/SecurityModel.xmi");
 			
